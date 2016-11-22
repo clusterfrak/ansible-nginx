@@ -9,8 +9,8 @@
 
 - name: installing nginx components
   package: name={{item}} state=installed
-    with_items:
-      - nginx
+  with_items:
+    - nginx
 
 - name: checking nginx web directory 
   file: path=/var/www/html state=directory owner=nginx group=nginx mode=0775 recurse=yes
