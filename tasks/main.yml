@@ -1,0 +1,23 @@
+---
+- name: adding nginx repo
+  yum_repository:
+    name: nginx
+    description: Offiical Nginx Repository for CentOS
+    baseurl: http://nginx.org/packages/centos/6/x86_64/
+    gpgcheck: no
+    enabled: yes
+
+- name: installing nginx components
+  package: name={{item}} state=installed
+    with_items:
+      - nginx
+
+- name: checking nginx web directory 
+  file: path=/var/www/html state=directory owner=nginx group=nginx mode=0775 recurse=yes
+
+- name: configure nginx
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf owner=nginx group=nginx mode=0644
+  notify: restart nginx
+
+- name: starting nginx
+  service: name=nginx state=started enabled=yes
