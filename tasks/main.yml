@@ -1,21 +1,21 @@
 ---
 - name: adding nginx repo
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
   yum_repository:
     name: nginx
     description: Offiical Nginx Repository for CentOS
     baseurl: http://nginx.org/packages/centos/6/x86_64/
     gpgcheck: no
     enabled: yes
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
 
 - name: adding nginx repo
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 7
   yum_repository:
     name: nginx
     description: Offiical Nginx Repository for CentOS
     baseurl: http://nginx.org/packages/centos/7/x86_64/
     gpgcheck: no
     enabled: yes
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 7
 
 - name: adding nginx key
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
