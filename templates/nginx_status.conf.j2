@@ -1,8 +1,8 @@
 server {
   server_name           {{ansible_hostname}};
-  listen                {{http_port}};
+  listen                {{status_port}};
 
-  location /status {
+  location / {
       # Turn on nginx stats
         stub_status on;
 
