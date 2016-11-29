@@ -3,7 +3,10 @@
    become: true
    vars:
       site_name: "{{ lookup('env','SITE_NAME') }}"
+      nginx_ssl_dir: "/etc/nginx/ssl"
+   
    tasks:
+    # Set stats to check for the existance of the default web dir and conf file
     - name: stat web directory
       stat: path=/var/www/html/nginx.local
       register: webdir_stat
@@ -12,17 +15,34 @@
       stat: path=/etc/nginx/conf.d/nginx.local.conf
       register: siteconfig_stat
 
+    # Rename the web directory if the default exists
     - name: reconfiguring web directory
       command: mv /var/www/html/nginx.local /var/www/html/{{site_name}}
       when: webdir_stat.stat.exists
 
+    # Reconfigure the site config file if the default already exists
     - name: reconfiguring site
       replace: dest=/etc/nginx/conf.d/nginx.local.conf regexp='nginx.local' replace='{{site_name}}' owner=nginx group=nginx mode=644
+      when: siteconfig_stat.stat.exists
       notify: restart nginx
     
+    # Rename the nginx config file if the default already exists
     - name: reconfiguring nginx
       command: mv /etc/nginx/conf.d/nginx.local.conf /etc/nginx/conf.d/{{site_name}}.conf
       when: siteconfig_stat.stat.exists
+      notify: restart nginx
+
+    # Generate a self signed certificate for the web service
+    - name: ensuring openssl is present
+      package: name={{item}} state=installed
+      with_items:
+        - openssl
+
+    - name: creating nginx ssl directory
+      file: path={{nginx_ssl_dir}} state=directory owner=nginx group=nginx mode=0775 recurse=yes
+
+    - name: generate self signed certificate
+      command: openssl req -new -nodes -x509 -subj "/C=US/ST=US/L=US/O=\'{{site_name}}\'/OU=Self Signed/CN=\'{{site_name}}\'" -days 3650 -keyout {{nginx_ssl_dir}}/{{site_name}}.key -out {{nginx_ssl_dir}}/{{site_name}}.crt -extensions v3_ca creates={{nginx_ssl_dir}}/{{site_name}}.crt
       notify: restart nginx
 
    handlers:

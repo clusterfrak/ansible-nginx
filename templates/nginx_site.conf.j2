@@ -4,8 +4,8 @@ server {
   #listen               {{https_port}} ssl;
 
   #ssl                  on;
-  #ssl_certificate      {{site_name}}.crt;
-  #ssl_certificate_key  {{site_name}}.key;
+  #ssl_certificate      {{nginx_ssl_dir}}/{{site_name}}.crt;
+  #ssl_certificate_key  {{nginx_ssl_dir}}/{{site_name}}.key;
 
   add_header            Access-Control-Allow-Origin {{site_name}};
   index                 index.html index.htm index.php;
