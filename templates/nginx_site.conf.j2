@@ -1,0 +1,27 @@
+server {
+  server_name           {{site_name}};
+  listen                {{http_port}};
+  #listen               {{https_port}} ssl;
+
+  #ssl                  on;
+  #ssl_certificate      {{site_name}}.crt;
+  #ssl_certificate_key  {{site_name}}.key;
+
+  add_header            Access-Control-Allow-Origin {{site_name}};
+  index                 index.html index.htm index.php;
+
+  access_log            /var/log/nginx/{{site_name}}.pipelogger.log pipelogger;
+  error_log             /var/log/nginx/{{site_name}}.error.log;
+
+  location / {
+      root                     /var/www/html/{{site_name}};
+      #root                    /opt/yum/{{site_name}};
+      autoindex                on;
+      proxy_read_timeout       90;
+      proxy_connect_timeout    90;
+      proxy_redirect           off;
+      proxy_set_header         Host $host;
+      proxy_set_header         X-Real-IP $remote_addr;
+      proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+}

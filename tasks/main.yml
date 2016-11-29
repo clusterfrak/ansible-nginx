@@ -45,5 +45,12 @@
   template: src=nginx_status.conf.j2 dest=/etc/nginx/conf.d/nginx_status.conf owner=nginx group=nginx mode=0644
   notify: restart nginx
 
+- name: configure nginx site directory
+  file: path=/var/www/html/{{site_name}} state=directory owner=nginx group=nginx mode=0775 recurse=yes
+
+- name: configure nginx site page
+  template: src=nginx_site.conf.j2 dest=/etc/nginx/conf.d/{{site_name}}.conf owner=nginx group=nginx mode=0644
+  notify: restart nginx
+
 - name: starting nginx
   service: name=nginx state=started enabled=yes

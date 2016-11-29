@@ -1,4 +1,2 @@
 ---
-http_port: 80
-https_port: 443
-status_port: 8080
+site_name: "{{ lookup('env','SITE_NAME') }}"

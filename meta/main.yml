@@ -23,5 +23,5 @@ galaxy_info:
     - system
     - services
     - web
-    - web server
+    - web-server
 dependencies: []

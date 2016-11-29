@@ -1,0 +1,32 @@
+---
+ - hosts: all
+   become: true
+   vars:
+      site_name: "{{ lookup('env','SITE_NAME') }}"
+   tasks:
+    - name: stat web directory
+      stat: path=/var/www/html/nginx.local
+      register: webdir_stat
+
+    - name: stat nginx configuration
+      stat: path=/etc/nginx/conf.d/nginx.local.conf
+      register: siteconfig_stat
+
+    - name: reconfiguring web directory
+      command: mv /var/www/html/nginx.local /var/www/html/{{site_name}}
+      when: webdir_stat.stat.exists
+
+    - name: reconfiguring site
+      replace: dest=/etc/nginx/conf.d/nginx.local.conf regexp='nginx.local' replace='{{site_name}}' owner=nginx group=nginx mode=644
+      notify: restart nginx
+    
+    - name: reconfiguring nginx
+      command: mv /etc/nginx/conf.d/nginx.local.conf /etc/nginx/conf.d/{{site_name}}.conf
+      when: siteconfig_stat.stat.exists
+      notify: restart nginx
+
+   handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
+
