@@ -6,18 +6,22 @@ galaxy_info:
   license: "license (MIT, BSD)"
   min_ansible_version: 2.0
   platforms:
-    - name: RHEL/CentOS/Amazon
+    - name: EL
       versions:
         - 6
         - 7
     - name: Debian
       versions:
-        - Jessie
+        - jessie
     - name: Ubuntu
       versions:
-        - Trusty
-  categories:
+        - trusty
+    - name: Amazon
+      versions:
+        - 2016.03
+  galaxy_tags:
     - system
+    - services
     - web
-
+    - web server
 dependencies: []
