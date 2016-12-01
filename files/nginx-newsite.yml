@@ -1,0 +1,34 @@
+---
+ - hosts: all
+   become: true
+   vars:
+      http_port: 80
+      https_port: 443
+      site_name: "{{ lookup('env','SITE_NAME') }}"
+      nginx_ssl_dir: "/etc/nginx/ssl"
+   
+   tasks:
+    # Set up new site
+    - name: configuring nginx site directory
+      file: path=/var/www/html/{{site_name}} state=directory owner=nginx group=nginx mode=0775 recurse=yes
+
+    - name: configure nginx site config file
+      template: src=../templates/nginx_site.conf.j2 dest=/etc/nginx/conf.d/{{site_name}}.conf owner=nginx group=nginx mode=0644
+      notify: restart nginx
+
+    # Generate a self signed certificate for the web service
+    - name: ensuring openssl is present
+      package: name={{item}} state=installed
+      with_items:
+        - openssl
+
+    - name: creating nginx ssl directory
+      file: path={{nginx_ssl_dir}} state=directory owner=nginx group=nginx mode=0775 recurse=yes
+
+    - name: generate self signed certificate
+      command: openssl req -new -nodes -x509 -subj "/C=US/ST=US/L=US/O=\'{{site_name}}\'/OU=Self Signed/CN=\'{{site_name}}\'" -days 3650 -keyout {{nginx_ssl_dir}}/{{site_name}}.key -out {{nginx_ssl_dir}}/{{site_name}}.crt -extensions v3_ca creates={{nginx_ssl_dir}}/{{site_name}}.crt
+      notify: restart nginx
+
+   handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
