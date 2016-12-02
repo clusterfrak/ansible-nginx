@@ -52,14 +52,17 @@
 
     # Patch the nginx config file to enable SSL
     - name: enabling ssl
-      lineinfile: 
+      replace: 
         dest: /etc/nginx/conf.d/{{site_name}}.conf
         regexp: '{{ item.regexp }}'
         replace: '{{ item.replace }}'
+        owner: nginx
+        group: nginx
+        mode: 644
       with_items:
         - { regexp: '#listen', replace: 'listen' }
-        - { regexp: '#ssl_certificate', replace: 'ssl_certificate' }
         - { regexp: '#ssl_certificate_key', replace: 'ssl_certificate_key' }
+        - { regexp: '#ssl_certificate', replace: 'ssl_certificate' }
         - { regexp: '#ssl', replace: 'ssl' }
       when: sitecert_stat.stat.exists
       notify: restart nginx
