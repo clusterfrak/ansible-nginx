@@ -1,18 +1,18 @@
 # Ansible Nginx Role
-=========
+-------
 
 This is an Ansible role that will provision a fresh Nginx web server installation on a variety of platforms and provide a few tools to get users started quickly and easily spinning up new sites within the web server. The role utilizes a few variables that will allow the role to install with set customizations such as the http/https ports that Nginx will listen on, the directory location that SSL certificates will be stored, and an automatic basic Nginx configuration generator, that will create a new site directory, config file for the new site, as well as auto generate a self signed certificate that Nginx can use to serve the new site once there has been content placed into the newly created web directory. 
 
 <br>
 
 ## More Documentation
-------------
+-------
 [clusterfrak.com](http://clusterfrak.com/devops/ansible/ansible_nginx/)
 
 <br>
 
 ## Requirements
-------------
+-------
 
 __1. &nbsp;&nbsp; Install dependencies:__ <br>
 
@@ -62,9 +62,11 @@ echo localhost ansible_connection=local > /etc/ansible/hosts
 <br>
 
 ## Role Variables
---------------
+-------
 
 The clusterfrak.nginx role uses a few environment variables to automatically configure Nginx. The role is set with default values for each of the available variables. Ansible will attempt to gather shell environment variable values and use those values to over-ride the default values that are set. If no shell environment variable is available or set, then ansible will configure itself to use the default values. In order to customize the installation of Nginx, simply export the ansible corresponding shell variable to set the value to something other than default prior to installing the role.
+
+<br>
 
 > Ansible Variables:
 
@@ -73,6 +75,8 @@ The clusterfrak.nginx role uses a few environment variables to automatically con
  - status_port: 8080
  - site_name: "nginx.local"
  - nginx_ssl_dir: "/etc/nginx/ssl"
+
+<br>
 
 > Mapped Shell Environment Variables:
 
@@ -97,14 +101,14 @@ export SITE_NAME="mydomain.com"
  <br>
 
 ## Dependencies
-------------
+-------
 
 No other roles required in order to run this role
 
 <br>
 
-## Example Playbook
-----------------
+## Example Playbook With Default Values
+-------
 
 This playbook will set up nginx, and create a /var/www/html/nginx.local directory along with an nginx config file located at /etc/nginx/conf.d/nginx.local.conf. The config file will be set up and configured to listen for nginx.local. Logs and path locations will also be set using nginx.local:
 
@@ -113,8 +117,8 @@ This playbook will set up nginx, and create a /var/www/html/nginx.local director
      roles:
        - nginx 
 
-## Example 2 Playbook
-----------------
+## Example Playbook With Custom Values
+-------
 
 This playbook will set up nginx, and create a /var/www/html/mysite.com directory along with an nginx config file located at /etc/nginx/conf.d/mysite.com.conf. The config file will be set up and configured to listen for mysite.com. Logs and path location will also be set using mysite.com. 
 
@@ -126,7 +130,7 @@ This playbook will set up nginx, and create a /var/www/html/mysite.com directory
 	       - nginx
 
 ## Nginx Role Support Playbooks:
- ----------------
+-------
 
 __/etc/ansible/roles/clusterfrak.nginx/files/nginx-reconfig.yml:__ <br>
 
@@ -149,9 +153,8 @@ ansible-playbook nginx-reconfig.yml
 
 <br>
 
-<div class='alert alert-info'>
-<i class='fa fa-info-circle fa-lg' style="color:black"></i> &nbsp;&nbsp; EXAMPLE: <br>
-For this example we will assume we have already ran the following "export SITE_NAME=mydomain.com" on your nginx host </div>
+> EXAMPLE: 
+__For this example we will assume we have already ran the following `export SITE_NAME=mydomain.com` on your nginx host__
 
 <br>
 
@@ -171,15 +174,13 @@ __/etc/ansible/roles/clusterfrak.nginx/files/nginx-newsite.yml:__
 
 <br>
 
-<div class='alert alert-warning'>
-<i class='fa fa-exclamation-triangle fa-lg' style="color:black"></i> &nbsp;&nbsp; PRE-REQUISITE STEP: <br>
-Prior to running the following nginx-newsite.yml playbook, remember to re-export SITE_NAME to the new site that you wish to configure! </div>
+>PRE-REQUISITE STEP: 
+__Prior to running the following nginx-newsite.yml playbook, remember to re-export `SITE_NAME` to the new site that you wish to configure!__
 
 <br>
 
-<div class='alert alert-info'>
-<i class='fa fa-info-circle fa-lg' style="color:black"></i> &nbsp;&nbsp; EXAMPLE: <br>
-For this example we will assume we have already ran the following `export SITE_NAME="mycoolsite2.com"` on your nginx host </div>
+>EXAMPLE:
+__For this example we will assume we have already ran the following `export SITE_NAME="mycoolsite2.com"` on your nginx host__
 
 <br>
 
@@ -200,7 +201,7 @@ License
 BSD
 
 Author Information
-------------------
+-------
 
 Rich Nason - http://nason.co
 http://clusterfrak.com
