@@ -2,10 +2,10 @@
  - hosts: all
    become: true
    vars:
-      http_port: 80
-      https_port: 443
-      site_name: "{{ lookup('env','SITE_NAME') }}"
-      nginx_ssl_dir: "/etc/nginx/ssl"
+      http_port: "{{ lookup('env','HTTP_PORT') | default('80',true) }}"
+      https_port: "{{ lookup('env','HTTPS_PORT') | default('443',true) }}"
+      site_name: "{{ lookup('env','SITE_NAME') | default('nginx.local',true) }}"
+      nginx_ssl_dir: "{{ lookup('env','SSL_DIR') | default('/etc/nginx/ssl',true) }}"
    
    tasks:
     # Set up new site

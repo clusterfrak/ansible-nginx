@@ -2,8 +2,8 @@
  - hosts: all
    become: true
    vars:
-      site_name: "{{ lookup('env','SITE_NAME') }}"
-      nginx_ssl_dir: "/etc/nginx/ssl"
+      site_name: "{{ lookup('env','SITE_NAME') | default('nginx.local',true) }}"
+      nginx_ssl_dir: "{{ lookup('env','SSL_DIR') | default('/etc/nginx/ssl',true) }}"
    
    tasks:
     # Set stats to check for the existance of the default web dir and conf file
