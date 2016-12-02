@@ -206,6 +206,6 @@ BSD
 Author Information
 -------
 
-Rich Nason - http://nason.co
-http://clusterfrak.com
-http://appcontainers.com
+[Rich Nason](http://nason.co) <br>
+[Clusterfrak Doc Site](http://clusterfrak.com) <br>
+[Container Doc Site](http://appcontainers.com) <br>
