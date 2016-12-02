@@ -1,6 +1,1 @@
 ---
-http_port: "{{ lookup('env','HTTP_PORT') }}"
-https_port: "{{ lookup('env','HTTPS_PORT') }}"
-status_port: "{{ lookup('env','STATUS_PORT') }}"
-site_name: "{{ lookup('env','SITE_NAME') }}"
-nginx_ssl_dir: "{{ lookup('env','SSL_DIR') }}"
