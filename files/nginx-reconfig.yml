@@ -50,6 +50,20 @@
       when: sitecert_stat.stat.exists == False
       notify: restart nginx
 
+    # Patch the nginx config file to enable SSL
+    - name: enabling ssl
+      lineinfile: 
+        dest: /etc/nginx/conf.d/{{site_name}}.conf
+        regex: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '#listen', line: 'listen' }
+        - { regexp: '#ssl_certificate', line: 'ssl_certificate' }
+        - { regexp: '#ssl_certificate_key', line: 'ssl_certificate_key' }
+        - { regexp: '#ssl', line: 'ssl' }
+      when: sitecert_stat.stat.exists
+      notify: restart nginx
+
    handlers:
     - name: restart nginx
       service: name=nginx state=restarted
