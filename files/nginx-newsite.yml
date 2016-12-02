@@ -43,7 +43,6 @@
         - { regexp: '#ssl_certificate_key', replace: 'ssl_certificate_key' }
         - { regexp: '#ssl_certificate', replace: 'ssl_certificate' }
         - { regexp: '#ssl', replace: 'ssl' }
-      when: sitecert_stat.stat.exists
       notify: restart nginx
 
    handlers:
