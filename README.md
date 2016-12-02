@@ -154,6 +154,7 @@ ansible-playbook nginx-reconfig.yml
 <br>
 
 > EXAMPLE: 
+
 __For this example we will assume we have already ran the following `export SITE_NAME=mydomain.com` on your nginx host__
 
 <br>
@@ -175,11 +176,13 @@ __/etc/ansible/roles/clusterfrak.nginx/files/nginx-newsite.yml:__
 <br>
 
 >PRE-REQUISITE STEP: 
+
 __Prior to running the following nginx-newsite.yml playbook, remember to re-export `SITE_NAME` to the new site that you wish to configure!__
 
 <br>
 
 >EXAMPLE:
+
 __For this example we will assume we have already ran the following `export SITE_NAME="mycoolsite2.com"` on your nginx host__
 
 <br>
