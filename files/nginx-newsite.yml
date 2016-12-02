@@ -29,6 +29,20 @@
       command: openssl req -new -nodes -x509 -subj "/C=US/ST=US/L=US/O=\'{{site_name}}\'/OU=Self Signed/CN=\'{{site_name}}\'" -days 3650 -keyout {{nginx_ssl_dir}}/{{site_name}}.key -out {{nginx_ssl_dir}}/{{site_name}}.crt -extensions v3_ca creates={{nginx_ssl_dir}}/{{site_name}}.crt
       notify: restart nginx
 
+    # Patch the nginx config file to enable SSL
+    - name: enabling ssl
+      lineinfile: 
+        dest: /etc/nginx/conf.d/{{site_name}}.conf
+        regexp: '{{ item.regexp }}'
+        replace: '{{ item.replace }}'
+      with_items:
+        - { regexp: '#listen', replace: 'listen' }
+        - { regexp: '#ssl_certificate', replace: 'ssl_certificate' }
+        - { regexp: '#ssl_certificate_key', replace: 'ssl_certificate_key' }
+        - { regexp: '#ssl', replace: 'ssl' }
+      when: sitecert_stat.stat.exists
+      notify: restart nginx
+
    handlers:
     - name: restart nginx
       service: name=nginx state=restarted

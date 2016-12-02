@@ -54,13 +54,13 @@
     - name: enabling ssl
       lineinfile: 
         dest: /etc/nginx/conf.d/{{site_name}}.conf
-        regex: "{{ item.regexp }}"
-        line: "{{ item.line }}"
+        regexp: '{{ item.regexp }}'
+        replace: '{{ item.replace }}'
       with_items:
-        - { regexp: '#listen', line: 'listen' }
-        - { regexp: '#ssl_certificate', line: 'ssl_certificate' }
-        - { regexp: '#ssl_certificate_key', line: 'ssl_certificate_key' }
-        - { regexp: '#ssl', line: 'ssl' }
+        - { regexp: '#listen', replace: 'listen' }
+        - { regexp: '#ssl_certificate', replace: 'ssl_certificate' }
+        - { regexp: '#ssl_certificate_key', replace: 'ssl_certificate_key' }
+        - { regexp: '#ssl', replace: 'ssl' }
       when: sitecert_stat.stat.exists
       notify: restart nginx
 
