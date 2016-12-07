@@ -1,5 +1,5 @@
 ---
-- name: adding nginx repo
+- name: adding CentOS6 nginx repo
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
   yum_repository:
     name: nginx
@@ -8,7 +8,16 @@
     gpgcheck: no
     enabled: yes
 
-- name: adding nginx repo
+- name: adding Amazon nginx repo
+  when: ansible_distribution == "Amazon"
+  yum_repository:
+    name: nginx
+    description: Offiical Nginx Repository for CentOS/Amazon
+    baseurl: http://nginx.org/packages/centos/6/x86_64/
+    gpgcheck: no
+    enabled: yes
+
+- name: adding CentOS7 nginx repo
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 7
   yum_repository:
     name: nginx
@@ -17,15 +26,15 @@
     gpgcheck: no
     enabled: yes
 
-- name: adding nginx key
+- name: adding Debian nginx key
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
   when: ansible_os_family == "Debian"
 
-- name: adding nginx repo
+- name: adding Debian nginx repo
   apt_repository: repo='deb http://nginx.org/packages/debian/ jessie nginx' state=present
   when: ansible_distribution == 'Debian' and ansible_distribution_release == 'jessie'
 
-- name: adding nginx repo
+- name: adding Ubuntu nginx repo
   apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
